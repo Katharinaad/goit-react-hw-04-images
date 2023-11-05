@@ -1,0 +1,10 @@
+.galleryList {
+  margin: 10px;
+  flex: 0 1 calc(33.33% - 20px);
+}
+
+.galleryPic {
+  object-fit: cover;
+  width: 100%;
+  height: 300px;
+}
