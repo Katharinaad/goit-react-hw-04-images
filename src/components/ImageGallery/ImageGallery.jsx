@@ -6,15 +6,16 @@ export function ImageGallery({ pictures, onClick }) {
 
   return (
     <ul className={css.gallery}>
-      {showPics > 0 &&
-        pictures.map((picture, index) => (
-          <ImageGalleryItem
-            key={index}
-            pictureUrl={picture.webformatURL}
-            pictureLarge={picture.largeImageURL}
-            onClick={onClick}
-          />
-        ))}
+      {showPics
+        ? pictures.map((picture, index) => (
+            <ImageGalleryItem
+              key={index}
+              pictureUrl={picture.webformatURL}
+              pictureLarge={picture.largeImageURL}
+              onClick={onClick}
+            />
+          ))
+        : null}
     </ul>
   );
 }
