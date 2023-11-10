@@ -61,7 +61,9 @@ export function App() {
     <div className="container">
       <Searchbar onSubmit={handleSearchSubmit} />
       <ImageGallery pictures={pictures} />
-      {pictures.length > 0 && !isEnd && <Button onClick={loadMore} />}
+      {pictures.length > 0 && !isEnd && (
+        <Button onClick={loadMore} dissabled={isLoading} />
+      )}
       {isLoading ? (
         <div
           style={{
