@@ -3,7 +3,6 @@ import 'react-notifications/lib/notifications.css';
 import API from '../services/api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
-import Modal from './Modal/Modal';
 import { RotatingLines } from 'react-loader-spinner';
 import { Searchbar } from './Searchbar/Searchbar';
 import {
@@ -13,43 +12,43 @@ import {
 
 export function App() {
   const [searchedQuery, setSearchedQuery] = useState('');
-  const [page, setPage] = useState('');
+  const [page, setPage] = useState(1);
   const [pictures, setPictures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
   const [isEnd, setIsEnd] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [largeImageURL, setLargeImageURL] = useState('');
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [largeImageURL, setLargeImageURL] = useState('');
 
-  //   async componentDidUpdate(_, prevState) {
-  //     const { page, searchedQuery } = this.state;
-  //     if (prevState.page !== page || prevState.searchedQuery !== searchedQuery) {
-  //       this.setState({ isLoading: true });
+  useEffect(() => {
+    if (!searchedQuery) return;
 
-  //       try {
-  //         const response = await API.fetchPics(searchedQuery, page);
+    const fetchData = async () => {
+      setIsLoading(true);
 
-  //         this.setState(prevState => ({
-  //           pictures: [...prevState.pictures, ...response.hits],
-  //         }));
+      try {
+        const response = await API.fetchPics(searchedQuery, page);
 
-  //         if (!response.totalHits) {
-  //           return NotificationManager.error('No images found');
-  //         }
+        if (!response.totalHits) {
+          return NotificationManager.error('No images found');
+        }
 
-  //         const totalPages = Math.ceil(response.totalHits / 12);
+        setPictures(prevPictures => [...prevPictures, ...response.hits]);
 
-  //         if (page === totalPages) {
-  //           this.setState({ isEnd: true });
-  //           return NotificationManager.info('End of search');
-  //         }
-  //       } catch (error) {
-  //         return NotificationManager.error('Error fetching images');
-  //       } finally {
-  //         this.setState({ isLoading: false });
-  //       }
-  //     }
-  //   }
+        const totalPages = Math.ceil(response.totalHits / 12);
+
+        if (page === totalPages) {
+          setIsEnd(true);
+          return NotificationManager.info('End of search');
+        }
+      } catch (error) {
+        return NotificationManager.error('Error fetching images');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [searchedQuery, page]);
 
   const handleSearchSubmit = searchedQuery => {
     setSearchedQuery(searchedQuery);
@@ -61,24 +60,24 @@ export function App() {
     setPage(prevPage => prevPage + 1);
   };
 
-  const onOpenModal = url => {
-    setIsModalOpen(true);
-    setLargeImageURL(url);
-  };
+  // const onOpenModal = url => {
+  //   setIsModalOpen(true);
+  //   setLargeImageURL(url);
+  // };
 
-  const onCloseModal = () => {
-    setIsModalOpen(false);
-    setLargeImageURL('');
-  };
+  // const onCloseModal = () => {
+  //   setIsModalOpen(false);
+  //   setLargeImageURL('');
+  // };
 
   // const showPics = Array.isArray(pictures) && pictures.length;
 
   return (
     <div className="container">
       <Searchbar onSubmit={handleSearchSubmit} />
-      <ImageGallery pictures={pictures} onClick={onOpenModal} />
-      {pictures > 0 && !isEnd && <Button onClick={loadMore} />}
-      {isLoading && (
+      <ImageGallery pictures={pictures} />
+      {pictures.length > 0 && !isEnd && <Button onClick={loadMore} />}
+      {isLoading ? (
         <div
           style={{
             position: 'fixed',
@@ -95,12 +94,12 @@ export function App() {
             visible={true}
           />
         </div>
-      )}
-      {isModalOpen && (
+      ) : null}
+      {/* {isModalOpen ? (
         <Modal onCloseModal={onCloseModal}>
           <img src={largeImageURL} alt="" />
         </Modal>
-      )}
+      ) : null} */}
       <NotificationContainer />
     </div>
   );
