@@ -15,7 +15,6 @@ export function App() {
   const [page, setPage] = useState(1);
   const [pictures, setPictures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
   const [isEnd, setIsEnd] = useState(false);
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const [largeImageURL, setLargeImageURL] = useState('');
@@ -70,8 +69,6 @@ export function App() {
   //   setLargeImageURL('');
   // };
 
-  // const showPics = Array.isArray(pictures) && pictures.length;
-
   return (
     <div className="container">
       <Searchbar onSubmit={handleSearchSubmit} />
@@ -95,11 +92,6 @@ export function App() {
           />
         </div>
       ) : null}
-      {/* {isModalOpen ? (
-        <Modal onCloseModal={onCloseModal}>
-          <img src={largeImageURL} alt="" />
-        </Modal>
-      ) : null} */}
       <NotificationContainer />
     </div>
   );
