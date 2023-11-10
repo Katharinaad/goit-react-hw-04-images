@@ -1,7 +1,7 @@
 import { ImageGalleryItem } from './ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
-export function ImageGallery({ pictures, onClick }) {
+export function ImageGallery({ pictures }) {
   const showPics = Array.isArray(pictures) && pictures.length;
 
   return (
@@ -12,7 +12,6 @@ export function ImageGallery({ pictures, onClick }) {
               key={index}
               pictureUrl={picture.webformatURL}
               pictureLarge={picture.largeImageURL}
-              onClick={onClick}
             />
           ))
         : null}
