@@ -1,8 +1,12 @@
 import css from './Button.module.css';
 
-export function Button({ onClick }) {
+export function Button({ onClick, dissabled }) {
   return (
-    <button className={css.loadMoreButton} onClick={onClick}>
+    <button
+      className={css.loadMoreButton}
+      onClick={onClick}
+      disabled={dissabled}
+    >
       Load More
     </button>
   );
